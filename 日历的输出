@@ -1,0 +1,179 @@
+
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+// 函数printMonth：按要求的格式打印某年某月的日历
+// 参数：year-年，month-月
+// 返回值：无
+void printMonth(int year, int month);
+
+// leapYear：判断闰年
+// 参数：y-年
+// 返回值：1-是闰年，0-不是闰年
+int leapYear(int y)
+{
+    if (y % 4 == 0 && y % 100 != 0 || y % 400 == 0)
+        return 1;
+    return 0;
+}
+
+// 函数whatDay:计算某年某月的1号是星期几
+// 参数：year-年，month-月
+// 返回值：1到7--星期1到星期日
+int whatDay(int year, int month)
+{
+    // 1年月日是星期一
+    int w = 1;
+    int i;
+
+    // 1到year-1都是全年
+    for (i = 1; i < year; i++)
+    {
+        if (leapYear(i))
+            w += 366;
+        else
+            w += 365;
+    }
+    switch (month)
+    {
+    case 12: // 加月的
+        w += 30;
+    case 11: // 加月的
+        w += 31;
+    case 10: // 加月的
+        w += 30;
+    case 9:  // 加月的
+        w += 31;
+    case 8:  // 加月的
+        w += 31;
+    case 7:  // 加月的
+        w += 30;
+    case 6:  // 加月的
+        w += 31;
+    case 5:  // 加月的
+        w += 30;
+    case 4:  // 加月的
+        w += 31;
+    case 3:  // 加月的
+        if (leapYear(year))
+            w += 29;
+        else
+            w += 28;
+    case 2:  // 加月的天
+        w += 31;
+    case 1:  // 1月不加了
+        ;
+    }
+
+    // 得到-6，其中为星期天
+    w = w % 7;
+
+    // 调整星期天
+    if (w == 0)
+        w = 7;
+    return w;
+}
+
+
+void  printMonth(int year, int month)
+{
+    for (int i = 1; i <= 7; i++)
+    {
+        switch (i)
+        {
+        case 1:cout << "  一"; break;
+        case 2:cout << "  二"; break;
+        case 3:cout << "  三"; break;
+        case 4:cout << "  四"; break;
+        case 5:cout << "  五"; break;
+        case 6:cout << "  六"; break;
+        case 7:cout << "  日"; break;
+        }
+
+    }
+    cout << endl;
+    //提前空格
+    int a = whatDay(year, month);
+    for (int i = 1; i <= (a - 1); i++)
+    {
+        cout << "    ";
+    }
+    //判断月份
+    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+    {
+        for (int i = 1; i <= 31; i++)
+        {if(i<=9)
+        {
+            cout << "   "<<i;
+        }
+        if (i > 9)
+        {
+            cout << "  " << i;
+        }
+            if ((a - 1 + i) % 7 == 0)
+            {
+                cout << endl;
+            }
+      }
+       
+    }
+    else if ( month == 4 || month == 6 || month == 9 || month == 11)
+    {
+        for (int i = 1; i <= 30; i++)
+        {
+            if (i <= 9)
+            {
+                cout << "   "<<i;
+            }
+            if (i > 9)
+            {
+                cout << "  " << i;
+            }
+            if ((a - 1 + i) % 7 == 0 )
+            {
+                cout << endl;
+            }
+        }
+    }
+    else if (month == 2)
+    {
+        int n;
+        if (leapYear(year))
+        {
+            n = 29;
+        }
+        else
+        {
+            n = 28;
+        }
+        for (int i = 1; i <= n; i++)
+        {
+            if (i <= 9)
+            {
+                cout << "   " << i;
+            }
+            if (i > 9)
+            {
+                cout << "  " << i;
+            }
+            if ((a - 1 + i) % 7 == 0)
+            {
+                cout << endl;
+            }
+        }
+    }
+}
+
+int main()
+{
+    // 年、月
+    int y, m;
+
+    // 输入年月
+    cin >> y >> m;
+
+    // 输出该年月的日历
+    printMonth(y, m);
+    
+    return 0;
+}
